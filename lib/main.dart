@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utip/widgets/bill_amount_field.dart';
 import 'package:utip/widgets/person_counter.dart';
 import 'package:utip/widgets/tip_slider.dart';
 
@@ -33,8 +34,16 @@ class UTip extends StatefulWidget {
 
 class _UTipState extends State<UTip> {
   int _personCount = 1;
-
   double _tipPercentage = 0.0;
+  double _billTotal = 100.0;
+
+  double totalPerPerson() {
+    return (_billTotal + totalTip()) / _personCount;
+  }
+
+  double totalTip() {
+    return _billTotal * _tipPercentage;
+  }
 
   void increment() {
     setState(() {
@@ -54,6 +63,8 @@ class _UTipState extends State<UTip> {
   Widget build(BuildContext context) {
     print(context.widget.toString());
     var theme = Theme.of(context);
+    double total = totalPerPerson();
+    double totalT = totalTip();
     // Style
     final style = theme.textTheme.displayMedium!.copyWith(
       color: theme.colorScheme.onPrimary,
@@ -76,7 +87,7 @@ class _UTipState extends State<UTip> {
                 children: [
                   Text("Total Per Person", style: style),
                   Text(
-                    "\$23.00",
+                    "\$${total.toStringAsFixed(2)}",
                     style: style.copyWith(
                       color: theme.colorScheme.onPrimary,
                       fontSize: theme.textTheme.displaySmall?.fontSize,
@@ -89,21 +100,19 @@ class _UTipState extends State<UTip> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: theme.colorScheme.primary, width: 2),
               ),
               child: Column(
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.attach_money),
-                      labelText: "Bill Amount",
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (String value) {
-                      print("Value: $value");
+                  BillAmountField(
+                    billAmount: _billTotal.toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _billTotal = double.tryParse(value) ?? 0.0;
+                      });
                     },
                   ),
                   // Splt Bill area
@@ -118,7 +127,7 @@ class _UTipState extends State<UTip> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Tip", style: theme.textTheme.titleMedium),
-                      Text("\$20", style: theme.textTheme.titleMedium),
+                      Text("\$${totalT}", style: theme.textTheme.titleMedium),
                     ],
                   ),
                   // Tip Percentage
@@ -141,5 +150,3 @@ class _UTipState extends State<UTip> {
     );
   }
 }
-
-
