@@ -90,7 +90,6 @@ class _UTipState extends State<UTip> {
               child: Column(
                 children: [
                   BillAmountField(
-                    billAmount: _billTotal.toString(),
                     onChanged: (value) {
                       setState(() {
                         _billTotal = double.tryParse(value) ?? 0.0;

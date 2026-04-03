@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BillAmountField extends StatelessWidget {
-  const BillAmountField({super.key, required this.onChanged, required this.billAmount});
-  final String billAmount;
+  const BillAmountField({super.key, required this.onChanged});
   final ValueChanged<String> onChanged;
 
   @override
