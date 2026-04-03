@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:utip/widgets/bill_amount_field.dart';
 import 'package:utip/widgets/person_counter.dart';
+import 'package:utip/widgets/tip_row.dart';
 import 'package:utip/widgets/tip_slider.dart';
+import 'package:utip/widgets/total_per_person.dart';
 
 void main() {
   runApp(const MyApp());
@@ -76,27 +78,7 @@ class _UTipState extends State<UTip> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.inversePrimary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Text("Total Per Person", style: style),
-                  Text(
-                    "\$${total.toStringAsFixed(2)}",
-                    style: style.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontSize: theme.textTheme.displaySmall?.fontSize,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          TotalPerPerson(theme: theme, style: style, total: total),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -123,13 +105,7 @@ class _UTipState extends State<UTip> {
                     onDecrement: decrement,
                   ),
                   // Tip Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Tip", style: theme.textTheme.titleMedium),
-                      Text("\$${totalT}", style: theme.textTheme.titleMedium),
-                    ],
-                  ),
+                  TipRow(theme: theme, totalT: totalT),
                   // Tip Percentage
                   Text("${(_tipPercentage * 100).round()}%"),
                   // Tip Slider
